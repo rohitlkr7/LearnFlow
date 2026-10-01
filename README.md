@@ -1,2 +1,2 @@
 # LearnFlow
-this is edtech web app 
+ AI-powered learning platform for students, teachers and parents

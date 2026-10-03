@@ -76,8 +76,6 @@ const registerUser = async (req, res) => {
 }
 };
 
-// Login 
-
 // Login
 const loginUser = async (req, res) => {
   try {
@@ -154,7 +152,53 @@ const loginUser = async (req, res) => {
   }
 };
 
+// getMe
+
+const getMe = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.userId).select("-password");
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      user,
+    });
+  } catch (error) {
+    console.error("Get me error:", error);
+
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
+};
+
+// Logout 
+
+const logoutUser = (req, res) => {
+  res.clearCookie("token", {
+    httpOnly: true,
+    secure: false,
+    sameSite: "lax",
+  });
+
+  res.status(200).json({
+    success: true,
+    message: "Logout successful",
+  });
+};
+
+
+
 module.exports = {
   registerUser,
   loginUser,
+  getMe,
+  logoutUser,
 };
